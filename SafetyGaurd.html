@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafetyGuard Monitor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f4f4f4;
+            transition: all 0.3s ease;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #6c44a0;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: -250px; /* Initially hidden */
+            padding-top: 20px;
+            transition: left 0.3s ease; /* Smooth transition for opening/closing */
+        }
+
+        .sidebar.open {
+            left: 0; /* Sidebar visible when open */
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background: #532f87;
+        }
+
+        .sidebar ul li.active {
+            background: #45297a;
+        }
+
+        .sidebar ul li i {
+            margin-right: 10px;
+        }
+
+        /* Main content */
+        .main-content {
+            width: 100%; /* Full width */
+            transition: margin-left 0.3s ease; /* Adjust content when sidebar toggles */
+        }
+
+        .main-content.open {
+            margin-left: 250px; /* Adjust content when sidebar is open */
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #6c44a0;
+            font-size: 24px;
+        }
+
+        .status {
+            background-color: #27ae60;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            color: #6c44a0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h2 span {
+            font-size: 14px;
+            color: #6c44a0;
+            cursor: pointer;
+        }
+
+        .video-box {
+            background: #d3d3d3;
+            height: 180px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .location-img {
+            width: 100%;
+            height: 200px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .controls button {
+            flex: 1;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .btn-emergency {
+            background-color: #e74c3c;
+        }
+
+        .btn-emergency:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-police {
+            background-color: #3498db;
+        }
+
+        .btn-police:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-ambulance {
+            background-color: #2ecc71;
+        }
+
+        .btn-ambulance:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-location {
+            background-color: #9b59b6;
+        }
+
+        .btn-location:hover {
+            background-color: #8e44ad;
+        }
+
+        /* Sidebar Menu Button */
+        .menu-btn, .close-btn {
+            font-size: 24px;
+            color: #6c44a0;
+            cursor: pointer;
+            padding: 10px;
+            display: inline-block;
+        }
+
+        .close-btn {
+            display: none; /* Initially hidden */
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar h2 {
+                font-size: 16px;
+            }
+
+            .sidebar ul li {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li class="active"><i>🏠</i> Dashboard</li>
+            <li><i>📹</i> Live Monitoring</li>
+            <li><i>📍</i> Live Location</li>
+            <li><i>🚨</i> Emergency Controls</li>
+            <li><i>⚙️</i> Settings</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+            <div class="close-btn" onclick="closeSidebar()">✖</div>
+            <h1>SafetyGuard Monitor</h1>
+            <span class="status">Status: NORMAL</span>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h2>Live Monitoring <span>Show Feed</span></h2>
+                <div class="video-box">Video feed disabled</div>
+            </div>
+
+            <div class="card">
+                <h2>Live Location</h2>
+                <img src="https://i.imgur.com/q6FgIGs.png" alt="Live Location" class="location-img">
+            </div>
+
+            <div class="card">
+                <h2>Emergency Controls</h2>
+                <div class="controls">
+                    <button class="btn-emergency">🚨 Trigger Emergency Alarm</button>
+                    <button class="btn-police">📞 Call Police</button>
+                    <button class="btn-ambulance">🚑 Call Ambulance</button>
+                    <button class="btn-location">📍 Live Location</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const closeButton = document.querySelector('.close-btn');
+            const menuButton = document.querySelector('.menu-btn');
+            
+            sidebar.classList.add('open');
+            mainContent.classList.add('open');
+            closeButton.style.display = 'inline-block';
+            menuButton.style.display = 'none';
+        }
+
+        function closeSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const closeButton = document.querySelector('.close-btn');
+            const menuButton = document.querySelector('.menu-btn');
+
+            sidebar.classList.remove('open');
+            mainContent.classList.remove('open');
+            closeButton.style.display = 'none';
+            menuButton.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
