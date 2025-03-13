@@ -12,8 +12,8 @@ let otpStorage = {}; // Stores OTPs temporarily
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "pylarohit123@gmail.com",
-        pass: "otkixedbxyccroio", // Make sure this is an App Password, NOT your actual Gmail password
+        user: "trustwayrides@gmail.com",
+        pass: "uuzltvgrqkxkmdlo", // Make sure this is an App Password, NOT your actual Gmail password
     },
 });
 
@@ -33,7 +33,7 @@ app.post("/send-otp", (req, res) => {
     otpStorage[email] = otp; // Store OTP temporarily
 
     const mailOptions = {
-        from: "pylarohit123@gmail.com",
+        from: "trustwayrides@gmail.com",
         to: email,
         subject: "Your OTP for Login",
         text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
